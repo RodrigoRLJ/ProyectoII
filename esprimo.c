@@ -18,7 +18,7 @@ int main(void) {
   for (numero=BASE;numero<BASE+RANGO;numero++)
   {
 	 if (Comprobarsiesprimo(numero))
-		printf("%d \n", numero);
+		printf("%ld \n", numero);
 	  
   }
 
