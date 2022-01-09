@@ -12,7 +12,7 @@ int main(void) {
 
   clock_t start, end;
   double cpu_time_used;
-     
+      
   start = clock();
   
   for (numero=BASE;numero<BASE+RANGO;numero++)
