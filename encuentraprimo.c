@@ -174,4 +174,12 @@ static void alarmHandler(int signo)
     alarm(INTERVALO_TIMER);
 
 }
+// Función que comprueba si es primo
+int Comprobarsiesprimo(long int numero) {
+  if (numero < 2) return 0; // Por convenio 0 y 1 no son primos ni compuestos
+  else
+	for (int x = 2; x <= (numero / 2) ; x++)
+		if (numero % x == 0) return 0;
+  return 1;
+}
 
