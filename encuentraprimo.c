@@ -68,11 +68,12 @@ int main(int argc, char* argv[])
     T_MESG_BUFFER message;
     char info[LONGITUD_MSG_ERR];
     FILE *fsal, *fc;
-    int numhijos;
+    int numhijos = argc;//numero de hijos pasados por parametro
+    double cpu_time_used;
 
     // Control de entrada, después del nombre del script debe figurar el número de hijos y el parámetro verbosity
 
-    numhijos = 2;     // SOLO para el esqueleto, en el proceso  definitivo vendrá por la entrada
+    
 
     pid=fork();       // Creación del SERVER
     
