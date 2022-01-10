@@ -68,10 +68,12 @@ int main(int argc, char* argv[])
     T_MESG_BUFFER message;
     char info[LONGITUD_MSG_ERR];
     FILE *fsal, *fc;
-    int numhijos = argc;//numero de hijos pasados por parametro
+    int numhijos = atoi(argv[1]);//numero de hijos pasados por parametro
     double cpu_time_used;
+	
+	
 
-    // Control de entrada, después del nombre del script debe figurar el número de hijos y el parámetro verbosity
+    //Control de entrada, después del nombre del script debe figurar el número de hijos y el parámetro verbosity
 
     
 
@@ -183,4 +185,3 @@ int Comprobarsiesprimo(long int numero) {
 		if (numero % x == 0) return 0;
   return 1;
 }
-
