@@ -141,14 +141,19 @@ int main(int argc, char* argv[])
 			  msgrcv(msgid, &message, sizeof(message), 0, 0);
 			  sscanf(message.mesg_text,"%d",&pid); // Tendrás que guardar esa pid
 			  printf("\nMe ha enviado un mensaje el hijo %d\n",pid);
+			printf("\nRAIZ  SERV    CALC\n");
+                        printf("%d      %d      %d",pidraiz, pidservidor, pid );
+
+
 		  }
 		  
 			sleep(60); // Esto es solo para que el esqueleto no muera de inmediato, quitar en el definitivo
 
 		  
 		  // Mucho código con la lógica de negocio de SERVER
-		  
-		  // Borrar la cola de mensajería, muy importante. No olvides cerrar los ficheros
+		
+
+		// Borrar la cola de mensajería, muy importante. No olvides cerrar los ficheros
 		  msgctl(msgid,IPC_RMID,NULL);
 		  
 	   }
@@ -173,7 +178,7 @@ int main(int argc, char* argv[])
 static void alarmHandler(int signo)
 {
 //...
-    printf("SOLO PARA EL ESQUELETO... Han pasado 5 segundos\n");
+    printf(" Han pasado 5 segundos\n");
     alarm(INTERVALO_TIMER);
 
 }
