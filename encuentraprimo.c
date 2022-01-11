@@ -23,7 +23,7 @@
 
 // rango de búsqueda, desde BASE a BASE+RANGO
 #define BASE 800000000
-#define RANGO 2000
+#define RANGO 600
 
 // Intervalo del temporizador para RAIZ
 #define INTERVALO_TIMER 5
@@ -48,9 +48,11 @@ int ContarLineas();
 static void alarmHandler(int signo);
 
 int cuentasegs;                   // Variable para el cómputo del tiempo total
-
+int cierre=1;
 int main(int argc, char* argv[])
 {
+	system("cat /dev/null>primos.txt");//borramos archivs de primos.txt
+	system("cat /dev/null>cuentaprimos.txt");//borramos contenido cuentaprimos.txt
 	int i,j;
 	long int numero;
 	long int numprimrec;
@@ -64,14 +66,14 @@ int main(int argc, char* argv[])
     int pid, pidservidor, pidraiz, parentpid, mypid, pidcalc;
     int *pidhijos;
     int intervalo,inicuenta;
-    int verbosity;
+    int verbose=atoi(argv[2]);
     T_MESG_BUFFER message;
     char info[LONGITUD_MSG_ERR];
-    FILE *fsal, *fc;
+    FILE *src, *src2;
     int numhijos = atoi(argv[1]);//numero de hijos pasados por parametro
     double cpu_time_used;
-	
-	
+    
+	src=fopen("primos.txt","a");
 
     //Control de entrada, después del nombre del script debe figurar el número de hijos y el parámetro verbosity
 
@@ -121,13 +123,40 @@ int main(int argc, char* argv[])
 			message.mesg_type = COD_ESTOY_AQUI;
 			sprintf(message.mesg_text,"%d",mypid);
 			msgsnd( msgid, &message, sizeof(message), IPC_NOWAIT);
-		
-			// Un montón de código por escribir
-			sleep(60); // Esto es solo para que el esqueleto no muera de inmediato, quitar en el definitivo
+			int trabajo_porHijo=RANGO/numhijos;
+			int o=1;
+			for(int c=1;c<=numhijos;c++){
 
-			exit(0);
+             			for (numero=BASE+trabajo_porHijo*(c-1);numero<BASE+trabajo_porHijo;numero++){
+                			 if (Comprobarsiesprimo(numero)==1){
+                    				if(verbose==1){
+                       					 printf("%ld \n", numero);
+                				    }
+						src2=fopen("cuentaprimos.txt","w");
+
+						if(o%5==0){
+							
+							fprintf(src2,"\nLlevan %d numeros primos", o);
+							
+						}else{fprintf(src2," \n");}
+						fclose(src2);
+						fprintf(src,"%ld\n", numero);
+						o++;
+               				 }
+
+              		}	
+			
+
+			
+			}
+			fclose(src);
+			
+		        system("wc -l primos.txt");//cuenta las lineas del fichero
+			system("cp primos.txt sorterprimos.txt");//copia el contenido del fichero en el otro fichero
+			system("sort -n sorterprimos.txt");//ordena el fichero
+			//printf("\nEl tiempo transcurrido han sido \n");
+			exit(1);
 		}
-		
 		// SERVER
 		
 		else
@@ -147,7 +176,7 @@ int main(int argc, char* argv[])
 
 		  }
 		  
-			sleep(60); // Esto es solo para que el esqueleto no muera de inmediato, quitar en el definitivo
+			
 
 		  
 		  // Mucho código con la lógica de negocio de SERVER
@@ -172,17 +201,21 @@ int main(int argc, char* argv[])
       // ...
       // El final de todo
     }
+ 
 }
 
 // Manejador de la alarma en el RAIZ
 static void alarmHandler(int signo)
 {
 //...
+
     printf(" Han pasado 5 segundos\n");
+	system("cat cuentaprimos.txt|tail -n1");
+       printf("\n");
     alarm(INTERVALO_TIMER);
 
 }
-// Función que comprueba si es primo
+// Funón que comprueba si es primo
 int Comprobarsiesprimo(long int numero) {
   if (numero < 2) return 0; // Por convenio 0 y 1 no son primos ni compuestos
   else
