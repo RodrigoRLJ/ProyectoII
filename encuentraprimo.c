@@ -223,3 +223,4 @@ int Comprobarsiesprimo(long int numero) {
 		if (numero % x == 0) return 0;
   return 1;
 }
+
